@@ -12,12 +12,7 @@
         }
 
 
-        public string ToLcdString() => $"{LineColor} {LineType} {LineWidth}";
-
-        public override string ToString() {
-            var ls = ((LineType & 128) != 0) ? "Construction" : LineType.ToString();
-            return $"(Color{LineColor}Type({ls}),Width({LineWidth}))";
-        }
+        public override string ToString() => $"{LineColor} {LineType} {LineWidth}";
 
     }
 }

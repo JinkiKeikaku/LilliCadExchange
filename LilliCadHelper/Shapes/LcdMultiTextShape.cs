@@ -80,7 +80,7 @@ namespace LilliCadHelper.Shapes
         /// <inheritdoc/>
         internal override void Read(LcdStreamReader sr)
         {
-            var param = sr.ReadParameters();
+            var param = sr.GetParameters();
             P0 = param.GetPoint();
             Width = param.GetDouble();
             Height = param.GetDouble();
@@ -96,13 +96,14 @@ namespace LilliCadHelper.Shapes
             FontName = sr.ReadSingleString();
             Text = sr.ReadString();
         }
-        internal override void Write(StreamWriter sw)
+        internal override void Write(LcdStreamWriter sw)
         {
             sw.WriteLine("MULTITEXT");
-            sw.Write($"\t{P0.ToLcdString()} {Width} {Height} {FontHeight} {FontWidth} {Angle} ");
-            sw.WriteLine($"{TextStyle} {TextBasis} {TextColor} {TextFormat} {LineStyle.ToLcdString()} {FaceColor.ToLcdString()}");
-            sw.WriteLine($"\t{FontName}");
-            WriteString(sw, Text);
+            sw.WriteParamLine(P0,Width,Height,FontHeight,FontWidth,Angle,
+                TextStyle,TextBasis,TextColor,TextFormat,LineStyle,FaceColor
+            );
+            sw.WriteParamLine(FontName);
+            sw.WriteString(Text);
         }
 
     }

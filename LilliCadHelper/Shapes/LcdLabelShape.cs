@@ -55,27 +55,27 @@ namespace LilliCadHelper.Shapes
         /// <inheritdoc/>
         internal override void Read(LcdStreamReader sr)
         {
-            var param = sr.ReadParameters();
+            var param = sr.GetParameters();
             LineStyle = param.GetLineStyle();
             Arrow = param.GetArrowStyle();
             FaceColor = param.GetFaceColor();
             Text = sr.ReadString();
             FontName = sr.ReadString();    //ReadSingleString()ではない
-            param = sr.ReadParameters();
+            param = sr.GetParameters();
             FontHeight = param.GetDouble();
             TextStyle = param.GetInt();
             TextGap = param.GetDouble();
             TextColor = param.GetInt();
             Points = sr.ReadPoints();
         }
-        internal override void Write(StreamWriter sw)
+        internal override void Write(LcdStreamWriter sw)
         {
             sw.WriteLine("LABEL");
-            sw.WriteLine($"\t{LineStyle.ToLcdString()} {Arrow.ToLcdString()} {FaceColor.ToLcdString()}");
-            WriteString(sw, Text);
-            WriteString(sw, FontName);
-            sw.WriteLine($"\t{FontHeight} {TextStyle} {TextGap} {TextColor}");
-            WritePoints(sw, Points);
+            sw.WriteParamLine(LineStyle,Arrow,FaceColor);
+            sw.WriteString(Text);
+            sw.WriteString(FontName);
+            sw.WriteParamLine(FontHeight,TextStyle,TextGap,TextColor);
+            sw.WritePoints(Points);
         }
     }
 }

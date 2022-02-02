@@ -14,18 +14,16 @@ namespace LilliCadHelper.Shapes
 
         internal override void Read(LcdStreamReader sr)
         {
-            var param = sr.ReadParameters();
+            var param = sr.GetParameters();
             P0 = param.GetPoint();
             Radius = param.GetDouble();
             LineStyle = param.GetLineStyle();
             FaceColor = param.GetFaceColor();
         }
-        internal override void Write(StreamWriter sw)
+        internal override void Write(LcdStreamWriter sw)
         {
             sw.WriteLine("CIRCLE");
-            sw.Write($"\t{P0.ToLcdString()} {Radius} ");
-            sw.Write($"{LineStyle.ToLcdString()} ");
-            sw.WriteLine($"{FaceColor.ToLcdString()} ");
+            sw.WriteParamLine(P0,Radius, LineStyle, FaceColor);
         }
     }
 }

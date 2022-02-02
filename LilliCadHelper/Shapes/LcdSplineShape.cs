@@ -15,7 +15,7 @@ namespace LilliCadHelper.Shapes
 
         internal override void Read(LcdStreamReader sr)
         {
-            var param = sr.ReadParameters();
+            var param = sr.GetParameters();
             LineStyle = param.GetLineStyle();
             StartArrow = param.GetArrowStyle();
             EndArrow = param.GetArrowStyle();
@@ -23,14 +23,11 @@ namespace LilliCadHelper.Shapes
             if (!param.IsEndOfLine)   FaceColor = param.GetFaceColor();
             Points = sr.ReadPoints();
         }
-        internal override void Write(StreamWriter sw)
+        internal override void Write(LcdStreamWriter sw)
         {
             sw.WriteLine("SPLINE");
-            sw.Write($"\t{LineStyle.ToLcdString()} ");
-            sw.Write($"{StartArrow.ToLcdString()} ");
-            sw.Write($"{EndArrow.ToLcdString()} ");
-            sw.WriteLine($"{FaceColor.ToLcdString()}");
-            WritePoints(sw, Points);
+            sw.WriteParamLine(LineStyle, StartArrow, EndArrow, FaceColor);
+            sw.WritePoints(Points);
         }
     }
 }

@@ -10,14 +10,14 @@ namespace LilliCadHelper.Shapes
         }
         internal override void Read(LcdStreamReader sr)
         {
-            var param = sr.ReadParameters();
+            var param = sr.GetParameters();
             P0 = param.GetPoint();
             Radius = param.GetDouble();
         }
-        internal override void Write(StreamWriter sw)
+        internal override void Write(LcdStreamWriter sw)
         {
             sw.WriteLine("MARK");
-            sw.WriteLine($"\t{P0.ToLcdString()} {Radius}");
+            sw.WriteParamLine(P0,Radius);
         }
     }
 }

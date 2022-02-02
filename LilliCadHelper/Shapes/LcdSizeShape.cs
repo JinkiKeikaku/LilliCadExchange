@@ -24,20 +24,20 @@ namespace LilliCadHelper.Shapes
         /// <inheritdoc/>
         internal override void Read(LcdStreamReader sr)
         {
-            var param = sr.ReadParameters();
+            var param = sr.GetParameters();
             for (int i = 0; i < 5; i++)
             {
                 Points[i] = param.GetPoint();
             }
             ReadSizeParam(param, sr);
         }
-        internal override void Write(StreamWriter sw)
+        internal override void Write(LcdStreamWriter sw)
         {
             sw.WriteLine("SIZE");
-            sw.Write($"\t{Points[0].ToLcdString()} {Points[1].ToLcdString()} ");
-            sw.Write($"{Points[2].ToLcdString()} {Points[3].ToLcdString()} ");
-            sw.Write($"{Points[4].ToLcdString()} ");
-            WriteSizeParam(sw);
+            sw.WriteParamLine(Points[0], Points[1], Points[2], Points[3], Points[4], LineStyle, Flag, TextColor, FaceColor);
+            sw.WriteParamLine(FontName);
+            sw.WriteParamLine(FontHeight, SizeStyle, Arrow);
+            sw.WriteString(Text);
         }
     }
 }

@@ -12,16 +12,16 @@ namespace LilliCadHelper.Shapes
         }
         internal override void Read(LcdStreamReader sr)
         {
-            var param = sr.ReadParameters();
+            var param = sr.GetParameters();
             LineStyle = param.GetLineStyle();
             FaceColor = param.GetFaceColor();
             Points = sr.ReadPoints();
         }
-        internal override void Write(StreamWriter sw)
+        internal override void Write(LcdStreamWriter sw)
         {
             sw.WriteLine("SPLINELOOP");
-            sw.WriteLine($"\t{LineStyle.ToLcdString()} {FaceColor.ToLcdString()} ");
-            WritePoints(sw, Points);
+            sw.WriteParamLine(LineStyle, FaceColor);
+            sw.WritePoints(Points);
         }
     }
 }

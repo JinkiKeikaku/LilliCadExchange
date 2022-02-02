@@ -25,7 +25,7 @@ namespace LilliCadHelper.Shapes
         /// 中心Y座標(0から1.0）
         /// </summary>
         public float Y { get; set; } = 0.5f;
-        public string ToLcdString() 
+        public override string ToString()
         {
             if (Colors.Length == 0)
             {
@@ -67,10 +67,6 @@ namespace LilliCadHelper.Shapes
                 default:
                     return $"{Colors[0]}";
             }
-        }
-
-        public override string ToString() {
-            return $"(Type({GradationType}))";
         }
     }
 }

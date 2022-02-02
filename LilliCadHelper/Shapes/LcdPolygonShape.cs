@@ -19,7 +19,7 @@ namespace LilliCadHelper.Shapes
 
         internal override void Read(LcdStreamReader sr)
         {
-            var param = sr.ReadParameters();
+            var param = sr.GetParameters();
             LineStyle = param.GetLineStyle();
             FaceColor = param.GetFaceColor();
             Flag = param.GetInt();
@@ -28,14 +28,11 @@ namespace LilliCadHelper.Shapes
             Points = sr.ReadPoints();
         }
 
-        internal override void Write(StreamWriter sw)
+        internal override void Write(LcdStreamWriter sw)
         {
             sw.WriteLine("POLYGON");
-            sw.Write($"\t{LineStyle.ToLcdString()} {FaceColor.ToLcdString()} ");
-            sw.Write($"{Flag} ");
-            sw.Write($"{StartArrow.ToLcdString()} ");
-            sw.WriteLine($"{EndArrow.ToLcdString()}");
-            WritePoints(sw, Points);
+            sw.WriteParamLine(LineStyle,FaceColor,Flag,StartArrow,EndArrow);
+            sw.WritePoints(Points);
         }
 
     }

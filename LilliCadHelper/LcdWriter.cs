@@ -38,54 +38,47 @@ namespace LilliCadHelper
             WriteLayersSection(sw);
             WriteLayers(sw);
             sw.WriteLine("[EOF]");
+            s.Close();
         }
         void WritePaperSection(LcdStreamWriter sw)
         {
             sw.WriteLine("[PAPER]");
-            sw.WriteParameterLine(Header.PaperName);
-            sw.WriteParameterLine(Header.PaperInfo);
-            sw.WriteParameterLine(Header.PaperWidth, Header.PaperHeight);
-            sw.WriteParameterLine(Header.PaperScaleName);
-            sw.WriteParameterLine(Header.PaperScale);
-            sw.WriteParameterLine(Header.IsPaperHorizontal, Header.PaperOriginFlag);
-            //sw.WriteLine($"\t{Header.PaperName}");
-            //sw.WriteLine($"\t{Header.PaperInfo}");
-            //sw.WriteLine($"\t{Header.PaperWidth} {Header.PaperHeight}");
-            //sw.WriteLine($"\t{Header.PaperScaleName}");
-            //sw.WriteLine($"\t{Header.PaperScale}");
-            //sw.WriteLine($"\t{BooleanToInt(Header.IsPaperHorizontal)} {Header.PaperOriginFlag}");
+            sw.WriteParamLine(Header.PaperName);
+            sw.WriteParamLine(Header.PaperInfo);
+            sw.WriteParamLine(Header.PaperWidth, Header.PaperHeight);
+            sw.WriteParamLine(Header.PaperScaleName);
+            sw.WriteParamLine(Header.PaperScale);
+            sw.WriteParamLine(Header.IsPaperHorizontal, Header.PaperOriginFlag);
         }
-        void WriteOriginSection(StreamWriter sw)
+        void WriteOriginSection(LcdStreamWriter sw)
         {
             sw.WriteLine("[ORIGIN]");
-            sw.WriteLine($"\t{Header.GridOrigin.ToLcdString()}");
+            sw.WriteParamLine(Header.GridOrigin);
         }
-        void WriteGridSection(StreamWriter sw)
+        void WriteGridSection(LcdStreamWriter sw)
         {
             sw.WriteLine("[GRID]");
-            sw.WriteLine($"\t{Header.GridSpaceX} {Header.GridSpaceY}");
+            sw.WriteParamLine(Header.GridSpaceX, Header.GridSpaceY);
         }
-        void WriteLayersSection(StreamWriter sw)
+        void WriteLayersSection(LcdStreamWriter sw)
         {
             sw.WriteLine("[LAYERS]");
-            sw.WriteLine($"\t{Header.SelectedLayer}");
-            sw.WriteLine($"\t{Layers.Count}");
+            sw.WriteParamLine(Header.SelectedLayer);
+            sw.WriteParamLine(Layers.Count);
         }
-        void WriteLayers(StreamWriter sw)
+        void WriteLayers(LcdStreamWriter sw)
         {
             foreach(var layer in Layers)
             {
                 sw.WriteLine("[LAYER]");
-                sw.WriteLine($"\t{layer.Name}");
-                sw.WriteLine($"\t{(int)layer.Flag}");
-                sw.WriteLine($"\t{layer.Shapes.Count}");
+                sw.WriteParamLine(layer.Name);
+                sw.WriteParamLine((int)layer.Flag);
+                sw.WriteParamLine(layer.Shapes.Count);
                 foreach(var s in layer.Shapes)
                 {
                     s.Write(sw);
                 }
             }
         }
-        int BooleanToInt(bool flag) => flag ? 1 : 0;
-
     }
 }

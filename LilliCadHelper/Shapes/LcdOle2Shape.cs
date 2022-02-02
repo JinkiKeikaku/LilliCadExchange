@@ -16,17 +16,17 @@ namespace LilliCadHelper.Shapes
 
         internal override void Read(LcdStreamReader sr)
         {
-            var param = sr.ReadParameters();
+            var param = sr.GetParameters();
             P0 = param.GetPoint();
             Width = param.GetDouble();
             Height = param.GetDouble();
             Datas = sr.ReadBytes();
         }
-        internal override void Write(StreamWriter sw)
+        internal override void Write(LcdStreamWriter sw)
         {
             sw.WriteLine("OLE2");
-            sw.WriteLine($"\t{P0.ToLcdString()} {Width} {Height}");
-            WriteBytes(sw, Datas, true);
+            sw.WriteParamLine(P0,Width,Height);
+            sw.WriteBytes(Datas, true);
         }
     }
 }

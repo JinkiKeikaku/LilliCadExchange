@@ -106,10 +106,9 @@ namespace LilliCadHelper
             }
         }
 
-        //string[] mTokens;
-        //int mPos;
-        StreamReader mSr;
-
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
         public LcdStreamReader(StreamReader sr)
         {
             mSr = sr;
@@ -117,7 +116,7 @@ namespace LilliCadHelper
 
         public Char Peek() => (Char)mSr.Peek();
 
-        public Parameters ReadParameters()
+        public Parameters GetParameters()
         {
             string a = ReadLineForParameters();
             return new Parameters(a.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries));
@@ -128,11 +127,11 @@ namespace LilliCadHelper
         public List<LcdPoint> ReadPoints()
         {
             var points = new List<LcdPoint>();
-            var param = ReadParameters();
+            var param = GetParameters();
             var n = param.GetInt();
             for (int i = 0; i < n; i++)
             {
-                param = ReadParameters();
+                param = GetParameters();
                 points.Add(param.GetPoint());
             }
             return points;
@@ -152,7 +151,7 @@ namespace LilliCadHelper
         public string ReadString()
         {
             string s = "";
-            var param = ReadParameters();
+            var param = GetParameters();
             int n = param.GetInt();
             if (n <= 0) return "";
             for (int i = 0; i < n - 1; i++)
@@ -196,16 +195,10 @@ namespace LilliCadHelper
             throw new Exception("Unexpectedly reached the end of the file");
         }
 
-        //public bool ReadParameters(Func<Parameters, bool> func)
-        //{
-        //    var param = ReadParameters();
-        //    return func(param);
-        //}
-
         public byte[] ReadBytes()
         {
             var isCompressd = false;
-            var param = ReadParameters();
+            var param = GetParameters();
             var len = param.GetInt();
             if (len <= 0) return null;
             if (param.Tokens.Length == 1) return null;    //old version.Dont use base64. So old that not support.
@@ -221,10 +214,9 @@ namespace LilliCadHelper
                 }
                 var m = Convert.FromBase64String(sb.ToString());
                 using var bs = new MemoryStream(m);
-                //bs.Position = 2;
+                //bs.Position = 2;  //DeflateStreamを使うときは最初の２バイトをスキップする。
                 //using var ds = new DeflateStream(bs, CompressionMode.Decompress);
                 using var ds = new ZLibStream(bs, CompressionMode.Decompress);
-
                 var buf = new byte[len];
                 ds.Read(buf, 0, len);
                 ds.Close();
@@ -242,5 +234,6 @@ namespace LilliCadHelper
                 return buf.ToArray();
             }
         }
+        StreamReader mSr;
     }
 }

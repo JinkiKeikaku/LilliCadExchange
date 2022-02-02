@@ -15,18 +15,17 @@ namespace LilliCadHelper.Shapes
 
         internal override void Read(LcdStreamReader sr)
         {
-            var param = sr.ReadParameters();
+            var param = sr.GetParameters();
             P0 = param.GetPoint();
             RX = param.GetDouble();
             RY = param.GetDouble();
             LineStyle = param.GetLineStyle();
             FaceColor = param.GetFaceColor();
         }
-        internal override void Write(StreamWriter sw)
+        internal override void Write(LcdStreamWriter sw)
         {
             sw.WriteLine("ELLIPSE");
-            sw.Write($"\t{P0.ToLcdString()} {RX} {RY} ");
-            sw.WriteLine($"{LineStyle.ToLcdString()} {FaceColor.ToLcdString()} ");
+            sw.WriteParamLine(P0,RX,RY, LineStyle, FaceColor);
         }
     }
 }

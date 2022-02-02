@@ -18,20 +18,17 @@ namespace LilliCadHelper.Shapes
 
         internal override void Read(LcdStreamReader sr)
         {
-            var param = sr.ReadParameters();
+            var param = sr.GetParameters();
             P0 = param.GetPoint();
             P1 = param.GetPoint();
             LineStyle = param.GetLineStyle();
             StartArrow = param.GetArrowStyle();
             EndArrow = param.GetArrowStyle();
         }
-        internal override void Write(StreamWriter sw) 
+        internal override void Write(LcdStreamWriter sw) 
         {
             sw.WriteLine("LINE");
-            sw.Write($"\t{P0.ToLcdString()} {P1.ToLcdString()} ");
-            sw.Write($"{LineStyle.ToLcdString()} ");
-            sw.Write($"{StartArrow.ToLcdString()} ");
-            sw.WriteLine($"{EndArrow.ToLcdString()} ");
+            sw.WriteParamLine(P0,P1, LineStyle, StartArrow, EndArrow);
         }
 
     }

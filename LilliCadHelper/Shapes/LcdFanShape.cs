@@ -20,7 +20,7 @@ namespace LilliCadHelper.Shapes
 
         internal override void Read(LcdStreamReader sr)
         {
-            var param = sr.ReadParameters();
+            var param = sr.GetParameters();
             P0 = param.GetPoint();
             Radius = param.GetDouble();
             StartAngleRad = param.GetDouble();
@@ -28,12 +28,10 @@ namespace LilliCadHelper.Shapes
             LineStyle = param.GetLineStyle();
             FaceColor = param.GetFaceColor();
         }
-        internal override void Write(StreamWriter sw)
+        internal override void Write(LcdStreamWriter sw)
         {
             sw.WriteLine("FAN");
-            sw.Write($"\t{P0.ToLcdString()} {Radius} {StartAngleRad} {EndAngleRad} ");
-            sw.Write($"{LineStyle.ToLcdString()} ");
-            sw.WriteLine($"{FaceColor.ToLcdString()} ");
+            sw.WriteParamLine(P0, Radius, StartAngleRad, EndAngleRad, LineStyle, FaceColor);
         }
     }
 }

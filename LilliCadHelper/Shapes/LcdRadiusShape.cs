@@ -31,18 +31,20 @@ namespace LilliCadHelper.Shapes
         /// <inheritdoc/>
         internal override void Read(LcdStreamReader sr)
         {
-            var param = sr.ReadParameters();
+            var param = sr.GetParameters();
             P0 = param.GetPoint();
             Radius = param.GetDouble();
             Angle = param.GetDouble();
             TR = param.GetDouble();
             ReadSizeParam(param, sr);
         }
-        internal override void Write(StreamWriter sw)
+        internal override void Write(LcdStreamWriter sw)
         {
             sw.WriteLine("RADIUS");
-            sw.Write($"\t{P0.ToLcdString()} {Radius} {Angle} {TR} ");
-            WriteSizeParam(sw);
+            sw.WriteParamLine(P0, Radius, Angle, TR, LineStyle, Flag, TextColor, FaceColor);
+            sw.WriteParamLine(FontName);
+            sw.WriteParamLine(FontHeight, SizeStyle, Arrow);
+            sw.WriteString(Text);
         }
     }
 }

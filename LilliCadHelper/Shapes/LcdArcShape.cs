@@ -17,7 +17,7 @@ namespace LilliCadHelper.Shapes
 
         internal override void Read(LcdStreamReader sr)
         {
-            var param = sr.ReadParameters();
+            var param = sr.GetParameters();
             P0 = param.GetPoint();
             Radius = param.GetDouble();
             StartAngleRad = param.GetDouble();
@@ -27,14 +27,10 @@ namespace LilliCadHelper.Shapes
             StartArrow = param.GetArrowStyle();
             EndArrow = param.GetArrowStyle();
         }
-        internal override void Write(StreamWriter sw)
+        internal override void Write(LcdStreamWriter sw)
         {
             sw.WriteLine("ARC");
-            sw.Write($"\t{P0.ToLcdString()} {Radius} {StartAngleRad} {EndAngleRad} ");
-            sw.Write($"{LineStyle.ToLcdString()} ");
-            sw.Write($"{FaceColor.ToLcdString()} ");
-            sw.Write($"{StartArrow.ToLcdString()} ");
-            sw.WriteLine($"{EndArrow.ToLcdString()} ");
+            sw.WriteParamLine(P0, Radius, StartAngleRad, EndAngleRad, LineStyle, FaceColor, StartArrow, EndArrow);
         }
     }
 }

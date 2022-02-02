@@ -7,9 +7,6 @@
             ArrowType = arrowType;
             ArrowSize = arrowSize;
         }
-        public string ToLcdString() => $"{ArrowType} {ArrowSize}";
-        public override string ToString() {
-            return $"(Type({ArrowType}),Size({ArrowSize}))";
-        }
+        public override string ToString() => $"{ArrowType} {ArrowSize}";
     }
 }

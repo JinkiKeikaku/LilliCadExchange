@@ -18,7 +18,7 @@ namespace LilliCadHelper.Shapes
 
         internal override void Read(LcdStreamReader sr)
         {
-            var param = sr.ReadParameters();
+            var param = sr.GetParameters();
             P0 = param.GetPoint();
             Width = param.GetDouble();
             Height = param.GetDouble();
@@ -26,13 +26,13 @@ namespace LilliCadHelper.Shapes
             InfoHeader = sr.ReadBytes();
             Datas = sr.ReadBytes();
         }
-        internal override void Write(StreamWriter sw)
+        internal override void Write(LcdStreamWriter sw)
         {
             sw.WriteLine("BITMAP");
-            sw.WriteLine($"\t{P0.ToLcdString()} {Width} {Height}");
-            WriteBytes(sw, FileHeader, false);
-            WriteBytes(sw, InfoHeader, false);
-            WriteBytes(sw, Datas, true);
+            sw.WriteParamLine(P0,Width,Height);
+            sw.WriteBytes(FileHeader, false);
+            sw.WriteBytes(InfoHeader, false);
+            sw.WriteBytes(Datas, true);
         }
 
     }

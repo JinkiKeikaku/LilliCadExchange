@@ -83,17 +83,17 @@ namespace LilliCadHelper
                         break;
                     case "LAYERS":
                         {
-                            Header.SelectedLayer = lcdSr.ReadParameters().GetInt();// 選択されていたレイヤー
-                            Header.NumLayer = lcdSr.ReadParameters().GetInt();//レイヤーがいくつあるか
+                            Header.SelectedLayer = lcdSr.GetParameters().GetInt();// 選択されていたレイヤー
+                            Header.NumLayer = lcdSr.GetParameters().GetInt();//レイヤーがいくつあるか
                         }
                         break;
                     case "LAYER":
                         {
                             var layer = new LcdLayer();
                             layer.Name = lcdSr.ReadSingleString();
-                            int flag = lcdSr.ReadParameters().GetInt();
+                            int flag = lcdSr.GetParameters().GetInt();
                             layer.Flag = (LcdLayer.LayerFlag)flag;
-                            int numShape = lcdSr.ReadParameters().GetInt();
+                            int numShape = lcdSr.GetParameters().GetInt();
                             Layers.Add(layer);
                             while (!lcdSr.IsEndOfStream)
                             {
@@ -133,24 +133,24 @@ namespace LilliCadHelper
         {
             Header.PaperName = lcdSr.ReadSingleString();
             Header.PaperInfo = lcdSr.ReadSingleString();
-            var param = lcdSr.ReadParameters();
+            var param = lcdSr.GetParameters();
             Header.PaperWidth = param.GetDouble();
             Header.PaperHeight = param.GetDouble();
             Header.PaperScaleName = lcdSr.ReadSingleString();
-            param = lcdSr.ReadParameters();
+            param = lcdSr.GetParameters();
             Header.PaperScale = param.GetDouble();
-            param = lcdSr.ReadParameters();
+            param = lcdSr.GetParameters();
             Header.IsPaperHorizontal = param.GetInt() != 0;
             Header.PaperOriginFlag = param.GetInt();
         }
         void ParseOrigin(LcdStreamReader lcdSr)
         {
-            Header.GridOrigin = lcdSr.ReadParameters().GetPoint();
+            Header.GridOrigin = lcdSr.GetParameters().GetPoint();
         }
 
         void ParseGrid(LcdStreamReader lcdSr)
         {
-            var param = lcdSr.ReadParameters();
+            var param = lcdSr.GetParameters();
             Header.GridSpaceX = param.GetDouble();
             Header.GridSpaceY = param.GetDouble();
         }

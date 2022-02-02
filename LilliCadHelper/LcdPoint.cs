@@ -9,10 +9,6 @@
             X = x;
             Y = y;
         }
-        public string ToLcdString() => $"{X} {Y}";
-        public override string ToString()
-        {
-            return $"({X:F1}, {Y:F1})";
-        }
+        public override string ToString() => $"{X} {Y}";
     }
 }

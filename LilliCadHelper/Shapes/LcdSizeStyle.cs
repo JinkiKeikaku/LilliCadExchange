@@ -22,7 +22,7 @@ namespace LilliCadHelper.Shapes
         /// </summary>
         public float Textgap { get; set; }
 
-        public string ToLcdString() => $"{Linegap} {Linejut} {Linedrop} {Textgap}";
+        override public string ToString() => $"{Linegap} {Linejut} {Linedrop} {Textgap}";
 
     }
 }

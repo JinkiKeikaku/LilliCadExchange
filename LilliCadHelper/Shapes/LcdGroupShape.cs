@@ -24,9 +24,9 @@ namespace LilliCadHelper.Shapes
 
         internal override void Read(LcdStreamReader sr)
         {
-            var param = sr.ReadParameters();
+            var param = sr.GetParameters();
             var n = param.GetInt();
-            param = sr.ReadParameters();
+            param = sr.GetParameters();
             IsBasisEnable = param.GetInt() == 1;
             P0 = param.GetPoint();
             for(var i = 0; i < n; i++)
@@ -34,19 +34,21 @@ namespace LilliCadHelper.Shapes
                 var s = LcdShapeManager.CreateShape(sr);
                 if (s != null) Shapes.Add(s);
             }
+            sr.GetParameters();//最後の"０"をスキップ。
+
+
         }
-        internal override void Write(StreamWriter sw)
+        internal override void Write(LcdStreamWriter sw)
         {
             sw.WriteLine("GROUP");
-            sw.WriteLine($"\t{Shapes.Count}");
+            sw.WriteParamLine(Shapes.Count);
             var bf = IsBasisEnable ? 1 : 0;
-            sw.WriteLine($"\t{bf} {P0.ToLcdString()}");
+            sw.WriteParamLine(IsBasisEnable, P0);
             foreach(var s in Shapes)
             {
                 s.Write(sw);
             }
+            sw.WriteLine("0");
         }
-
-
     }
 }

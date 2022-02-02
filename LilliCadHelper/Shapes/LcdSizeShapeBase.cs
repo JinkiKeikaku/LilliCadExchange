@@ -54,18 +54,11 @@ namespace LilliCadHelper.Shapes
             TextColor = param.GetInt();
             FaceColor = param.GetFaceColor();
             FontName = sr.ReadSingleString();
-            param = sr.ReadParameters();
+            param = sr.GetParameters();
             FontHeight = param.GetDouble();
             SizeStyle = param.GetSizeStyle();
             Arrow = param.GetArrowStyle();
             Text = sr.ReadString();
-        }
-        internal void WriteSizeParam(StreamWriter sw)
-        {
-            sw.WriteLine($"{LineStyle.ToLcdString()} {Flag} {TextColor} {FaceColor.ToLcdString()} ");
-            sw.WriteLine($"\t{FontName}");
-            sw.WriteLine($"\t{FontHeight} {SizeStyle.ToLcdString()} {Arrow.ToLcdString()}");
-            WriteString(sw, Text);
         }
     }
 }
