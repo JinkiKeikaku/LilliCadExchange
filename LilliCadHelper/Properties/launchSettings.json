@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LilliCadHelper": {
+      "commandName": "Executable",
+      "executablePath": "D:\\CadWork\\LilliCadExchange\\LilliCadExchange\\bin\\Debug\\net5.0-windows\\LilliCadViewer.exe"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Authors>Ran Yujirou</Authors>
+    <Company>Jinki-Keikaku</Company>
+  </PropertyGroup>
+
+</Project>
