@@ -12,11 +12,6 @@ namespace LilliCadHelper
     public class LcdReader
     {
         /// <summary>
-        /// 読み込み完了時に呼ばれるコールバック
-        /// </summary>
-        /// <param name="reader"></param>
-        public delegate void CompletedCallback(LcdReader reader);
-        /// <summary>
         /// lcdヘッダー
         /// </summary>
         public LcdHeader Header { get; set; } = new();
@@ -34,8 +29,7 @@ namespace LilliCadHelper
         /// ファイル読み込み
         /// </summary>
         /// <param name="path">ファイルのパス</param>
-        /// <param name="callback">読み込み完了時のコールバック</param>
-        public void Read(string path, CompletedCallback callback)
+        public void Read(string path)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             using var sr = new StreamReader(path, Encoding.GetEncoding("shift_jis"));
@@ -120,15 +114,10 @@ namespace LilliCadHelper
                 }
                 sec = "";
             }
-            callback?.Invoke(this);
             sr.Close();
         }
 
 
-        //internal LcdShape ReadShape(LcdStreamReader sr)
-        //{
-        //    return LcdShapeManager.CreateShape(sr);
-        //}
         void ParsePaperInfo(LcdStreamReader lcdSr)
         {
             Header.PaperName = lcdSr.ReadSingleString();

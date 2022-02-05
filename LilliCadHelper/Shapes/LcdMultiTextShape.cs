@@ -50,19 +50,21 @@ namespace LilliCadHelper.Shapes
         /// </summary>
         public int TextColor { get; set; }
         /// <summary>
-        /// 文字のフォーマット(揃え)。以下のフラグのOR。
-        /// <para>横方向[0：左 1：中央 2：右] のいずれか</para>
-        ///​ <para>縦方向[0：上 4：中央 8：下] のいずれか</para>
+        /// 文字の揃えと折り返しのフラグ(16)のOR。
+        /// <para>0：左上　1：中上　2：右上</para>
+        /// <para>4：左中　5：中央　6：右中</para>
+        /// <para>8：左下　9：中下　10：右下</para>
+        /// <para>16:折り返し</para>
         /// </summary>
         public int TextFormat { get; set; }
         /// <summary>
         /// 線スタイル
         /// </summary>
-        public LcdLineStyle LineStyle { get; set; }
+        public LcdLineStyle LineStyle { get; set; } = new();
         /// <summary>
         /// 面色
         /// </summary>
-        public LcdFaceColor FaceColor { get; set; }
+        public LcdFaceColor FaceColor { get; set; } = new();
         /// <summary>
         /// フォント名
         /// </summary>
@@ -100,7 +102,7 @@ namespace LilliCadHelper.Shapes
         {
             sw.WriteLine("MULTITEXT");
             sw.WriteParamLine(P0,Width,Height,FontHeight,FontWidth,Angle,
-                TextStyle,TextBasis,TextColor,TextFormat,LineStyle,FaceColor
+                TextStyle,TextBasis,TextColor, TextFormat, LineStyle,FaceColor
             );
             sw.WriteParamLine(FontName);
             sw.WriteString(Text);

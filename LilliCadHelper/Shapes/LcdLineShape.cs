@@ -2,15 +2,32 @@
 
 namespace LilliCadHelper.Shapes
 {
+    /// <summary>
+    /// 直線
+    /// </summary>
     public class LcdLineShape : LcdShape
     {
+        /// <summary>
+        /// 始点
+        /// </summary>
         public LcdPoint P0 { get; set; }
+        /// <summary>
+        /// 終点
+        /// </summary>
         public LcdPoint P1 { get; set; }
-        public LcdLineStyle LineStyle { get; set; }
-        public LcdArrowStyle StartArrow { get; set; }
-        public LcdArrowStyle EndArrow { get; set; }
-
-
+        /// <summary>
+        /// 線スタイル
+        /// </summary>
+        public LcdLineStyle LineStyle { get; set; } = new();
+        /// <summary>
+        /// 始点矢印
+        /// </summary>
+        public LcdArrowStyle StartArrow { get; set; } = new();
+        /// <summary>
+        /// 終点矢印
+        /// </summary>
+        public LcdArrowStyle EndArrow { get; set; } = new();
+        /// <inheritdoc/>
         public override string ToString()
         {
             return $"Line(P0{P0} P1{P1} LineStyle{LineStyle} Arrow0{StartArrow} Arrow1{EndArrow}";

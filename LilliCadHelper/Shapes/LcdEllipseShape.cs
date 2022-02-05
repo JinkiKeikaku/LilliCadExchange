@@ -3,12 +3,30 @@ using System.IO;
 
 namespace LilliCadHelper.Shapes
 {
+    /// <summary>
+    /// 楕円
+    /// </summary>
     public class LcdEllipseShape : LcdShape{
+        /// <summary>
+        /// 中心
+        /// </summary>
         public LcdPoint P0 { get; set; }
+        /// <summary>
+        /// 横直径
+        /// </summary>
         public double RX { get; set; }
+        /// <summary>
+        /// 縦直径
+        /// </summary>
         public double RY { get; set; }
-        public LcdLineStyle LineStyle { get; set; }
-        public LcdFaceColor FaceColor { get; set; }
+        /// <summary>
+        /// 線スタイル
+        /// </summary>
+        public LcdLineStyle LineStyle { get; set; } = new();
+        /// <summary>
+        /// 面色
+        /// </summary>
+        public LcdFaceColor FaceColor { get; set; } = new();
         public override string ToString() {
             return $"Ellipse(P0{P0} RX({RX}) RY({RY}) LineStyle{LineStyle} FaceColor{FaceColor}";
         }

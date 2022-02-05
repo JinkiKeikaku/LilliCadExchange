@@ -5,7 +5,7 @@
         public int LineType { get; set; }
         public float LineWidth { get; set; }
 
-        public LcdLineStyle(int lineColor, int lineType, float lineWidth) {
+        public LcdLineStyle(int lineColor = 0, int lineType =0, float lineWidth=0) {
             LineColor = lineColor;
             LineType = lineType;
             LineWidth = lineWidth;

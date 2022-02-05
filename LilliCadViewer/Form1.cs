@@ -30,14 +30,14 @@ namespace LilliCadViewer
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var d = new OpenFileDialog();
-            d.Filter = "lcd Files|*.lcd|All Files|*.*";
+            d.Filter = "LilliCad drawing files|*.lcd|LilliCad parts files|*.lcp|All files|*.*";
             if (d.ShowDialog() != DialogResult.OK) return;
             OpenFile(d.FileName);
         }
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var d = new SaveFileDialog();
-            d.Filter = "lcd Files|*.lcd|All Files|*.*";
+            d.Filter = "LilliCad drawing files|*.lcd|All files|*.*";
             if (d.ShowDialog() != DialogResult.OK) return;
             SaveFile(d.FileName);
         }
@@ -50,8 +50,23 @@ namespace LilliCadViewer
                 {
                     //JwwReaderが読み込み用のクラス。
                     var reader = new LilliCadHelper.LcdReader();
-                    //Completedは読み込み完了時に実行される関数。
-                    reader.Read(path, Completed);
+                    reader.Read(path);
+                    //読み込み成功。失敗は例外で対処。
+                    mLayers = reader.Layers;
+                    mHeader = reader.Header;
+                    LayerNameToTextBox(reader);
+                    //DrawContextは表示する時に使う情報保持オブジェクト。
+                    DrawContext = new DrawContext(reader.Header);
+                    //スクロールバーなんかの設定。
+                    CalcSize();
+                    //panel1を無効化してpanel1のpaintが呼ばれる。
+                    panel1.Invalidate();
+                }else if(Path.GetExtension(path) == ".lcp")
+                {
+                    //パーツファイル読み込み
+                    var reader = new LilliCadHelper.LcpReader();
+                    reader.Read(path);
+                    PartsInfoToTextBox(reader);
                 }
             }
             catch (Exception exception)
@@ -61,33 +76,6 @@ namespace LilliCadViewer
                 panel1.Invalidate();
             }
         }
-
-
-
-        //dllでjwwファイル読み込み完了後に呼ばれます。
-        private void Completed(LilliCadHelper.LcdReader reader)
-        {
-            mLayers = reader.Layers;
-            mHeader = reader.Header;
-            LayerNameToTextBox(reader);
-            //var origin = GetPaperOrigin(reader.Header);
-            //var cv = new LcdToShapeConverter(origin, reader.Header.PaperScale);
-            //foreach (var layer in reader.Layers)
-            //{
-            //    foreach (var lcdShape in layer.Shapes)
-            //    {
-            //        var s = cv.Convert(lcdShape);
-            //        if (s != null) mShapes.Add(s);
-            //    }
-            //}
-            //DrawContextは表示する時に使う情報保持オブジェクト。
-            DrawContext = new DrawContext(reader.Header);
-            //スクロールバーなんかの設定。
-            CalcSize();
-            //panel1を無効化してpanel1のpaintが呼ばれる。
-            panel1.Invalidate();
-        }
-
 
         /// <summary>
         /// レイヤ名をテキストボックスに入れる。
@@ -103,7 +91,24 @@ namespace LilliCadViewer
         }
 
         /// <summary>
-        /// 図形の表示原点。Viewerの使用で用紙中央が原点のため、ちょっとややこしい。
+        /// パーツ情報をテキストボックスに入れる。
+        /// </summary>
+        private void PartsInfoToTextBox(LilliCadHelper.LcpReader reader)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"List name:{reader.Name}");
+            sb.AppendLine($"Version:{reader.LcpVersion}");
+            sb.AppendLine($"Parts count:{reader.PartsList.Count}");
+            foreach(var part in reader.PartsList)
+            {
+                sb.AppendLine("[PARTS]");
+                sb.AppendLine($"Name:{part.Name}");
+            }
+            textBox1.Text = sb.ToString();
+        }
+
+        /// <summary>
+        /// 図形の表示原点。Viewerの仕様で用紙中央が原点のため、ちょっとややこしい。
         /// 例えば、原点フラグが6で左下の場合は(-width/2, -height/2)になる。
         /// 現状、LilliCadは6のみ使用で他はチェックできていない。
         /// </summary>
@@ -128,7 +133,7 @@ namespace LilliCadViewer
         }
 
 
-        private void SaveFile(String path)
+        private void SaveFile(string path)
         {
             try
             {
@@ -167,7 +172,6 @@ namespace LilliCadViewer
                 MessageBox.Show(exception.Message, "Error");
             }
         }
-
 
         /// <summary>
         /// スクロールの設定

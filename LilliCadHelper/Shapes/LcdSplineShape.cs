@@ -3,12 +3,31 @@ using System.IO;
 
 namespace LilliCadHelper.Shapes
 {
+    /// <summary>
+    /// スプライン
+    /// </summary>
     public class LcdSplineShape : LcdShape{
-        public LcdLineStyle LineStyle { get; set; }
-        public LcdFaceColor FaceColor { get; set; }
-        public LcdArrowStyle StartArrow { get; set; }
-        public LcdArrowStyle EndArrow { get; set; }
+        /// <summary>
+        /// 線スタイル
+        /// </summary>
+        public LcdLineStyle LineStyle { get; set; } = new();
+        /// <summary>
+        /// 面色
+        /// </summary>
+        public LcdFaceColor FaceColor { get; set; } = new();
+        /// <summary>
+        /// 始点矢印
+        /// </summary>
+        public LcdArrowStyle StartArrow { get; set; } = new();
+        /// <summary>
+        /// 終点矢印
+        /// </summary>
+        public LcdArrowStyle EndArrow { get; set; } = new();
+        /// <summary>
+        /// 頂点リスト
+        /// </summary>
         public List<LcdPoint> Points { get; set;  } = new();
+        /// <inheritdoc/>
         public override string ToString() {
             return $"Spline(Points.Count({Points.Count}) LineStyle{LineStyle} FaceColor{FaceColor}  Arrow0{StartArrow} Arrow1{EndArrow}";
         }

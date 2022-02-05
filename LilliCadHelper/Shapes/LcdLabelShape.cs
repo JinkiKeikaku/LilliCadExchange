@@ -10,15 +10,15 @@ namespace LilliCadHelper.Shapes
         /// <summary>
         /// 線スタイル
         /// </summary>
-        public LcdLineStyle LineStyle { get; set; }
+        public LcdLineStyle LineStyle { get; set; } = new();
         /// <summary>
         /// 矢印スタイル
         /// </summary>
-        public LcdArrowStyle Arrow { get; set; }
+        public LcdArrowStyle Arrow { get; set; } = new();
         /// <summary>
         /// 面色
         /// </summary>
-        public LcdFaceColor FaceColor { get; set; }
+        public LcdFaceColor FaceColor { get; set; } = new();
         /// <summary>
         /// 文字
         /// </summary>

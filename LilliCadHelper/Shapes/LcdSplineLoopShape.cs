@@ -3,10 +3,23 @@ using System.IO;
 
 namespace LilliCadHelper.Shapes
 {
+    /// <summary>
+    /// 閉じたスプライン
+    /// </summary>
     public class LcdSplineLoopShape  : LcdShape{
-        public LcdLineStyle LineStyle { get; set; }
-        public LcdFaceColor FaceColor { get; set; }
-        public List<LcdPoint> Points { set;  get; } = new();
+        /// <summary>
+        /// 線スタイル
+        /// </summary>
+        public LcdLineStyle LineStyle { get; set; } = new();
+        /// <summary>
+        /// 面色
+        /// </summary>
+        public LcdFaceColor FaceColor { get; set; } = new();
+        /// <summary>
+        /// 頂点リスト
+        /// </summary>
+        public List<LcdPoint> Points { get; set; } = new();
+        /// <inheritdoc/>
         public override string ToString() {
             return $"SplineLoop(Points.Count({Points.Count}) LineStyle{LineStyle} FaceColor{FaceColor}";
         }

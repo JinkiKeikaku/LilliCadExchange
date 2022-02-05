@@ -12,8 +12,8 @@ namespace LilliCadHelper.Shapes
         public double Radius { get; set; }
         public double StartAngleRad { get; set; }
         public double EndAngleRad { get; set; }
-        public LcdLineStyle LineStyle { get; set; }
-        public LcdFaceColor FaceColor { get; set; }
+        public LcdLineStyle LineStyle { get; set; } = new();
+        public LcdFaceColor FaceColor { get; set; } = new();
         public override string ToString() {
             return $"Fan(P0{P0} R({Radius}) Angle({StartAngleRad}, {EndAngleRad})LineStyle{LineStyle} FaceColor{FaceColor}";
         }

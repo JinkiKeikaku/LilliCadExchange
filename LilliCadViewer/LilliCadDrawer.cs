@@ -14,7 +14,7 @@ namespace LilliCadViewer
     {
         LcdHeader mHeader;
         List<LcdLayer> mLayers;
-        CadPoint mOrigin = new(0,0);
+        CadPoint mOrigin = new(0, 0);
         double mScale = 1.0;
 
         public LilliCadDrawer(LcdHeader header, List<LcdLayer> layers)
@@ -27,9 +27,9 @@ namespace LilliCadViewer
 
         public void OnDraw(Graphics g, DrawContext d)
         {
-            foreach(var layer in mLayers)
+            foreach (var layer in mLayers)
             {
-                foreach(var shape in layer.Shapes)
+                foreach (var shape in layer.Shapes)
                 {
                     OnDrawShape(g, d, shape);
                 }
@@ -41,7 +41,7 @@ namespace LilliCadViewer
         {
             switch (shape)
             {
-                case LcdLineShape s:    OnDrawLine(g, d, s);    break;
+                case LcdLineShape s: OnDrawLine(g, d, s); break;
                 case LcdCircleShape s: OnDrawCircle(g, d, s); break;
                 case LcdEllipseShape s: OnDrawEllipse(g, d, s); break;
                 case LcdArcShape s: OnDrawArc(g, d, s); break;
@@ -114,11 +114,11 @@ namespace LilliCadViewer
         {
             ApplyLineStyle(d.Pen, shape.LineStyle);
             var pts = new PointF[shape.Points.Count];
-            for (var i=0; i < shape.Points.Count; i++)
+            for (var i = 0; i < shape.Points.Count; i++)
             {
                 pts[i] = d.DocToCanvas(ConvertPoint(shape.Points[i]));
             }
-            if ((shape.Flag & 1) != 0)
+            if (shape.IsClosed)
             {
                 g.DrawPolygon(d.Pen, pts);
             }
@@ -163,12 +163,12 @@ namespace LilliCadViewer
             var p0 = d.DocToCanvas(ConvertPoint(shape.P0));
             var w = d.DocToCanvas(ConvertLength(shape.Width));
             var h = -d.DocToCanvas(ConvertLength(shape.Height));
-            if(w < 0)
+            if (w < 0)
             {
                 p0.X += w;
                 w = -w;
             }
-            if(h < 0)
+            if (h < 0)
             {
                 p0.Y += h;
                 h = -h;
@@ -178,7 +178,7 @@ namespace LilliCadViewer
         }
         void OnDrawGroup(Graphics g, DrawContext d, LcdGroupShape shape)
         {
-            foreach(var s in shape.Shapes)
+            foreach (var s in shape.Shapes)
             {
                 OnDrawShape(g, d, s);
             }
@@ -187,6 +187,7 @@ namespace LilliCadViewer
         void OnDrawText(Graphics g, DrawContext d, LcdTextShape shape)
         {
             //文字表示のみで配置基準など省略。
+            //フォント幅も処理を省略したが、もしも処理するならフォント幅が０の時は指定なしであることに注意する。
             ApplyLineStyle(d.Pen, shape.LineStyle);
             var p0 = d.DocToCanvas(ConvertPoint(shape.P0));
             var angle = d.DocToCanvasAngle(RadToDeg(shape.Angle));
@@ -195,13 +196,14 @@ namespace LilliCadViewer
             var saved = g.Save();
             g.TranslateTransform(p0.X, p0.Y);
             g.RotateTransform(angle);
-            g.DrawString(shape.Text, font, brush, 0,0);
+            g.DrawString(shape.Text, font, brush, 0, 0);
             g.Restore(saved);
         }
 
         void OnDrawMultiText(Graphics g, DrawContext d, LcdMultiTextShape shape)
         {
             //文字表示のみで配置基準など省略。
+            //フォント幅も処理を省略したが、もしも処理するならフォント幅が０の時は指定なしであることに注意する。
             ApplyLineStyle(d.Pen, shape.LineStyle);
             var p0 = d.DocToCanvas(ConvertPoint(shape.P0));
             var angle = d.DocToCanvasAngle(RadToDeg(shape.Angle));
@@ -210,7 +212,7 @@ namespace LilliCadViewer
             var saved = g.Save();
             g.TranslateTransform(p0.X, p0.Y);
             g.RotateTransform(angle);
-            g.DrawString(shape.Text, font, brush, 0,0);
+            g.DrawString(shape.Text, font, brush, 0, 0);
             g.Restore(saved);
         }
 
@@ -219,7 +221,7 @@ namespace LilliCadViewer
             //文字の離れとか寸法線のはみ出しとか文字の背景色（FaceColor）、文字の配置などは省略などは省略
             ApplyLineStyle(d.Pen, shape.LineStyle);
             var pts = new CadPoint[5];
-            for(var i = 0; i < 5; i++)
+            for (var i = 0; i < 5; i++)
             {
                 pts[i] = ConvertPoint(shape.Points[i]);
             }
@@ -239,13 +241,13 @@ namespace LilliCadViewer
             g.DrawLine(d.Pen, p1, p31);
             g.DrawLine(d.Pen, p2, p3);
             var saved = g.Save();
-            var angle = d.DocToCanvasAngle(RadToDeg((pts[3]- pts[2]).GetAngle()));
+            var angle = d.DocToCanvasAngle(RadToDeg((pts[3] - pts[2]).GetAngle()));
             g.TranslateTransform(p4.X, p4.Y);
             g.RotateTransform(angle);
             var f = new StringFormat();
             f.Alignment = StringAlignment.Center;
             f.LineAlignment = StringAlignment.Far;
-            g.DrawString(shape.Text, font, brush, 0,0, f);
+            g.DrawString(shape.Text, font, brush, 0, 0, f);
             g.Restore(saved);
         }
         void OnDrawRadius(Graphics g, DrawContext d, LcdRadiusShape shape)
@@ -255,7 +257,7 @@ namespace LilliCadViewer
             var p0 = ConvertPoint(shape.P0);
             var r = ConvertLength(shape.Radius);
             var p1 = p0 + CadPoint.CreateFromPolar(r, shape.Angle);
-            var p2 = (p1 - p0).UnitPoint() * ConvertLength(shape.TR)+p0;
+            var p2 = (p1 - p0).UnitPoint() * ConvertLength(shape.TR) + p0;
             var p00 = d.DocToCanvas(p0);
             var p01 = d.DocToCanvas(p1);
             var p02 = d.DocToCanvas(p2);
@@ -316,7 +318,7 @@ namespace LilliCadViewer
             using var font = new Font(shape.FontName, d.DocToCanvas(shape.FontHeight), GraphicsUnit.Pixel);
             using var brush = new SolidBrush(ConvertColor(shape.TextColor));
             var saved = g.Save();
-            var angle = d.DocToCanvasAngle(RadToDeg(shape.Angles[2]-Math.PI / 2));
+            var angle = d.DocToCanvasAngle(RadToDeg(shape.Angles[2] - Math.PI / 2));
             g.TranslateTransform(p00.X, p00.Y);
             g.RotateTransform(angle);
             var f = new StringFormat();
@@ -339,7 +341,7 @@ namespace LilliCadViewer
             var w = d.DocToCanvas(ConvertLength(shape.Width));
             var h = d.DocToCanvas(ConvertLength(shape.Height));
             RectangleF r = new RectangleF();
-            g.DrawImage(image, p0.X, p0.Y-h, w, h);
+            g.DrawImage(image, p0.X, p0.Y - h, w, h);
         }
 
         void OnDrawOle2(Graphics g, DrawContext d, LcdOle2Shape shape)
@@ -361,8 +363,8 @@ namespace LilliCadViewer
             d.Pen.Color = Color.Black;
             d.Pen.Width = 1.0f;
             g.DrawRectangle(d.Pen, p0.X, p0.Y, w, h);
-            g.DrawLine(d.Pen, p0.X, p0.Y, p0.X + w, p0.Y+h);
-            g.DrawLine(d.Pen, p0.X+w, p0.Y, p0.X, p0.Y+h);
+            g.DrawLine(d.Pen, p0.X, p0.Y, p0.X + w, p0.Y + h);
+            g.DrawLine(d.Pen, p0.X + w, p0.Y, p0.X, p0.Y + h);
         }
 
         CadPoint ConvertPoint(LcdPoint p)
@@ -394,7 +396,7 @@ namespace LilliCadViewer
 
         Color ConvertColor(int c)
         {
-            if (c == LILLICAD_NULL_COLOR)
+            if (c == LcdShape.LILLICAD_NULL_COLOR)
             {
                 return Color.Transparent;
             }
@@ -421,28 +423,14 @@ namespace LilliCadViewer
             };
         }
 
-        float[] GetLinePattern(int lineType)
+        public static float[] GetLinePattern(int lineType)
         {
             if ((lineType & 128) != 0)
             {
-                return DotPattern[8];
+                return LcdShape.DotPattern[8];
             }
-            return DotPattern[lineType];
+            return LcdShape.DotPattern[lineType];
         }
-
-
-        static readonly float[][] DotPattern = new float[][] {
-            new float[]{0},
-            new float[]{1.25f,1.25f},
-            new float[]{2.5f,2.5f},
-            new float[]{3.75f,1.25f},
-            new float[]{3.75f,1.25f, 1.25f,1.25f},
-            new float[]{6.25f,2.5f, 2.5f,2.5f},
-            new float[]{3.25f,1.25f, 1.25f,1.25f, 1.25f,1.25f},
-            new float[]{8.0f,2.5f, 1.25f,2.5f, 1.25f,2.5f},
-            new float[]{0.625f, 1.875f},
-        };
-        const int LILLICAD_NULL_COLOR = 0x1000000;//(RGB(255,255,255) + 1)
 
 
     }

@@ -4,6 +4,9 @@
     <TargetFramework>net6.0</TargetFramework>
     <Authors>Ran Yujirou</Authors>
     <Company>Jinki-Keikaku</Company>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
 
 </Project>

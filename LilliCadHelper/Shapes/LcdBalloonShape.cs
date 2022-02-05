@@ -11,15 +11,15 @@ namespace LilliCadHelper.Shapes
         /// <summary>
         /// 線スタイル
         /// </summary>
-        public LcdLineStyle LineStyle { get; set; }
+        public LcdLineStyle LineStyle { get; set; } = new();
         /// <summary>
         /// 矢印スタイル
         /// </summary>
-        public LcdArrowStyle Arrow { get; set; }
+        public LcdArrowStyle Arrow { get; set; } = new();
         /// <summary>
         /// 面色
         /// </summary>
-        public LcdFaceColor FaceColor { get; set; }
+        public LcdFaceColor FaceColor { get; set; } = new();
         /// <summary>
         /// 円の半径の最小値。実寸（用紙寸ではない）ことに注意してください。0の場合自動設定（文字列のサイズから決める）
         /// </summary>

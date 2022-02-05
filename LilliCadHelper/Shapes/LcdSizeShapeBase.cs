@@ -10,7 +10,7 @@ namespace LilliCadHelper.Shapes
         /// <summary>
         /// 線スタイル
         /// </summary>
-        public LcdLineStyle LineStyle { get; set; }
+        public LcdLineStyle LineStyle { get; set; } = new();
         /// <summary>
         /// フラグ　Bit0：1　寸法値を自動記入しない（文字列使用）
         /// </summary>
@@ -22,7 +22,7 @@ namespace LilliCadHelper.Shapes
         /// <summary>
         /// 面色
         /// </summary>
-        public LcdFaceColor FaceColor { get; set; }
+        public LcdFaceColor FaceColor { get; set; } = new();
         /// <summary>
         /// フォント名
         /// </summary>
@@ -34,11 +34,11 @@ namespace LilliCadHelper.Shapes
         /// <summary>
         /// 寸法値スタイル
         /// </summary>
-        public LcdSizeStyle SizeStyle { get; set; }
+        public LcdSizeStyle SizeStyle { get; set; } = new();
         /// <summary>
         /// 矢印スタイル
         /// </summary>
-        public LcdArrowStyle Arrow { get; set; }
+        public LcdArrowStyle Arrow { get; set; } = new();
         /// <summary>
         /// 文字列。保存時に図形に表示されていた文字列が入っています。 
         /// FフラグのBit0が0の場合は自動寸法ですが、読み込み時にTEXTの値を表示するか新たに寸法値を表示するかは

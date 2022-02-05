@@ -3,12 +3,12 @@ namespace LilliCadHelper.Shapes
 {
     public class LcdFaceColor {
         public enum Gradation { None, Line, Rectangle, Circle };
-        public Gradation GradationType { get; set; } //0-3
+        public Gradation GradationType { get; set; } = Gradation.None;
         /// <summary>
         /// 色の配列。グラデーションの場合は希望する色数の配列を設定すること。
         /// Noneは[0]のみ、中間色無しの場合は開始色[0]と終了色[1]、中間色ありは開始色[0]と中間色[1]と終了色[2]。
         /// </summary>
-        public int[] Colors { get; set; } = new int[1];
+        public int[] Colors { get; set; } = new int[1] { 0 };
         /// <summary>
         /// 中間色の位置(0から1.0）
         /// </summary>
