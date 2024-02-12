@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace LilliCadHelper
 {
+    /// <summary>
+    /// lcpファイル読み込みクラス
+    /// </summary>
     public class LcpReader
     {
         /// <summary>

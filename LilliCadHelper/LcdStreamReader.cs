@@ -1,6 +1,7 @@
 ﻿using LilliCadHelper.Shapes;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
@@ -218,9 +219,20 @@ namespace LilliCadHelper
                 //using var ds = new DeflateStream(bs, CompressionMode.Decompress);
                 using var ds = new ZLibStream(bs, CompressionMode.Decompress);
                 var buf = new byte[len];
-                ds.Read(buf, 0, len);
+
+                var offset = 0;
+                while (offset < buf.Length)
+                {
+                    var readSize = ds.Read(buf, offset, buf.Length - offset);
+                    if (readSize == 0) break;
+                    offset += readSize;
+                }
                 ds.Close();
                 return buf;
+
+                //ds.Read(buf, 0, len);
+                //ds.Close();
+                //return buf;
             }
             else
             {

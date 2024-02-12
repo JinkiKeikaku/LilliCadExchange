@@ -7,7 +7,7 @@ using System.Text;
 namespace LilliCadHelper
 {
     /// <summary>
-    /// 
+    /// lcdファイル読み込みクラス
     /// </summary>
     public class LcdReader
     {
